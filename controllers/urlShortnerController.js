@@ -22,8 +22,9 @@ const shortenUrl = async (req, res) => {
   const shortUrl = generateShortUrl(4);
 
   try {
+
     const query = 'INSERT INTO url_shortener (long_url, short_url) VALUES (?, ?)';
-    const result = await db.query(query, [longUrl, shortUrl]);
+    const result  = await db.query(query, [longUrl, shortUrl]);
     return res.status(200).json({ message: "Short URL created!" });
   } catch (e) {
     console.log(e);
@@ -31,6 +32,7 @@ const shortenUrl = async (req, res) => {
   }
 };
 
+// POST: Get the shortened URL
 // POST: Get the shortened URL
 const getShortenUrl = async (req, res) => {
   const { longUrl } = req.body;
@@ -46,8 +48,9 @@ const getShortenUrl = async (req, res) => {
     // Check if a result is found
     if (results.length > 0) {
       // Prepend 'https://' to the short URL
-      const shortUrl = `https://${results[0].short_url}`;
-      return res.status(200).json({ shortUrl, longUrl });
+      console.log(results)
+      const shortUrl = `https://${results[0][0].short_url}`;
+      return res.status(200).json({ shortUrl:shortUrl,longUrl:longUrl });
     } else {
       return res.status(404).json("Short URL not found");
     }
@@ -56,5 +59,6 @@ const getShortenUrl = async (req, res) => {
     return res.status(500).json("Internal server error");
   }
 };
+
 
 module.exports = { shortenUrl, getShortenUrl };
