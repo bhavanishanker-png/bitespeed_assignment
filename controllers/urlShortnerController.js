@@ -22,9 +22,8 @@ const shortenUrl = async (req, res) => {
   const shortUrl = generateShortUrl(4);
 
   try {
-
     const query = 'INSERT INTO url_shortener (long_url, short_url) VALUES (?, ?)';
-    const result  = await db.query(query, [longUrl, shortUrl]);
+    const result = await db.query(query, [longUrl, shortUrl]);
     return res.status(200).json({ message: "Short URL created!" });
   } catch (e) {
     console.log(e);
@@ -42,13 +41,16 @@ const getShortenUrl = async (req, res) => {
 
   try {
     const query = 'SELECT short_url FROM url_shortener WHERE long_url = ?';
-    const results = await db.query(query, [longUrl])
-    console.log(results[0])
+    const results = await db.query(query, [longUrl]);
+    
+    // Check if a result is found
     if (results.length > 0) {
-        return res.status(200).json({ shortUrl: results[0][0].short_url });
-      } else {
-        return res.status(404).json("Short URL not found");
-      };
+      // Prepend 'https://' to the short URL
+      const shortUrl = `https://${results[0].short_url}`;
+      return res.status(200).json({ shortUrl, longUrl });
+    } else {
+      return res.status(404).json("Short URL not found");
+    }
   } catch (e) {
     console.log(e);
     return res.status(500).json("Internal server error");
