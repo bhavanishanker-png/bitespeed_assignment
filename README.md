@@ -11,7 +11,7 @@ This API has two endpoints for working with URLs:
    - **Request Body** (Example):
      ```json
      {
-       "long_url": "https://example.com/some-long-url"
+       "longUrl": "https://example.com/some-long-url"
      }
      ```
    - **Response**:
@@ -28,7 +28,7 @@ This API has two endpoints for working with URLs:
    - **Response**:
      ```json
      {
-       "long_url": "https://example.com/some-long-url",
+       "longUrl": "https://example.com/some-long-url",
      "shortUrl": "aUnp"
 
      }
