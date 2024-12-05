@@ -16,9 +16,9 @@ This API has two endpoints for working with URLs:
      ```
    - **Response**:
      ```json
-     {
-       "short_url": "https://short.ly/abc123"
-     }
+       {
+       "message": "Short URL created!"
+      }
      ```
 
 2. **GET /url**  
@@ -28,7 +28,9 @@ This API has two endpoints for working with URLs:
    - **Response**:
      ```json
      {
-       "long_url": "https://example.com/some-long-url"
+       "long_url": "https://example.com/some-long-url",
+     "shortUrl": "aUnp"
+
      }
      ```
 
