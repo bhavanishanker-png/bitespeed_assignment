@@ -24,7 +24,12 @@ This API has two endpoints for working with URLs:
 2. **GET /url**  
    - **Description**: Accepts a shortened URL and returns the original long URL.  
    - **Request Parameter**:  
-     - `short_url`: The shortened URL (e.g., `https://short.ly/abc123`).  
+     - **Request Body** (Example):
+     ```json
+     {
+       "longUrl": "https://example.com/some-long-url"
+     }
+     ```
    - **Response**:
      ```json
      {
