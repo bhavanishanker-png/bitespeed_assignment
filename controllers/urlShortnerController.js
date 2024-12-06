@@ -49,7 +49,7 @@ const getShortenUrl = async (req, res) => {
       const shortUrl = `https://${results[0].short_url}`;
       return res.status(200).json({ shortUrl, longUrl });
     } else {
-      return res.status(404).json({ message: "Long URL not found in the database post the longUrl first", longUrl });
+      return res.status(404).json({  message: "Long URL not found in the database. Please post it first to generate a short URL.", longUrl });
     }
   } catch (e) {
     console.error(e);
