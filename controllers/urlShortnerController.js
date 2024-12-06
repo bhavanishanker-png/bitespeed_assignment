@@ -14,7 +14,7 @@ function generateShortUrl(length = 8) {
 // POST: Shorten a URL
 const shortenUrl = async (req, res) => {
   const { longUrl } = req.body;
-  
+
   if (!longUrl) {
     return res.status(400).json("Long URL required");
   }
@@ -22,13 +22,32 @@ const shortenUrl = async (req, res) => {
   const shortUrl = generateShortUrl(4);
 
   try {
-
     const query = 'INSERT INTO url_shortener (long_url, short_url) VALUES (?, ?)';
-    const result  = await db.query(query, [longUrl, shortUrl]);
-    return res.status(200).json({ message: "Short URL created!" });
+    await db.query(query, [longUrl, shortUrl]);
+    return res.status(200).json({ message: "Short URL created!", shortUrl: `https://${shortUrl}` });
   } catch (e) {
     console.log(e);
     return res.status(500).json("Internal server error");
+  }
+};
+
+// GET: Redirect to the original URL
+const redirectToLongUrl = async (req, res) => {
+  const { shortUrl } = req.params;
+
+  try {
+    const query = 'SELECT long_url FROM url_shortener WHERE short_url = ?';
+    const [results] = await db.query(query, [shortUrl]);
+    console.log(shortUrl)
+    if (results.length > 0) {
+      const longUrl = results[0].long_url;
+      return res.redirect(longUrl);
+    } else {
+      return res.status(404).json({ message: "Short URL not found" });
+    }
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -42,14 +61,16 @@ const getShortenUrl = async (req, res) => {
 
   try {
     const query = 'SELECT short_url FROM url_shortener WHERE long_url = ?';
-    const [results] = await db.query(query, [longUrl]); // Destructure the results as `db.query` usually returns an array.
+    const [results] = await db.query(query, [longUrl]);
 
     if (results.length > 0) {
-      // Prepend 'https://' to the short URL
-      const shortUrl = `https://${results[0].short_url}`;
+      const shortUrl = `${results[0].short_url}`;
       return res.status(200).json({ shortUrl, longUrl });
     } else {
-      return res.status(404).json({  message: "Long URL not found in the database. Please post it first to generate a short URL.", longUrl });
+      return res.status(404).json({
+        message: "Long URL not found in the database. Please post it first to generate a short URL.",
+        longUrl,
+      });
     }
   } catch (e) {
     console.error(e);
@@ -57,6 +78,4 @@ const getShortenUrl = async (req, res) => {
   }
 };
 
-
-
-module.exports = { shortenUrl, getShortenUrl };
+module.exports = { shortenUrl, getShortenUrl, redirectToLongUrl };
