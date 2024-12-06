@@ -46,3 +46,29 @@ This API has two endpoints for working with URLs:
 ---
 
 This should cover how the endpoints work in a simplified text format!
+
+
+---
+
+**URL Shortener API**
+
+
+3. **GET /:shortUrl**  
+   - **Description**: Redirects to the original URL associated with the `shortUrl`.  
+   - **Path Parameter**:  
+     - `shortUrl` (Example: `/abcd`)  
+   - **If the `shortUrl` exists**:  
+     - Redirects to the original URL (e.g., `https://example.com`).  
+   - **If the `shortUrl` does not exist**:  
+     **Response**:  
+     ```json
+     {
+       "message": "Short URL not found"
+     }
+     ```
+
+**Example Usage**:  
+- **POST** `/url` with a JSON body to generate a shortened URL.  
+- **GET** `/abcd` to redirect to the original URL.
+
+--- 
