@@ -43,13 +43,6 @@ This API has two endpoints for working with URLs:
 - **POST** `/url` with a JSON body to shorten a URL.  
 - **GET** `/url?short_url=https://short.ly/abc123` to retrieve the original URL.
 
----
-
-This should cover how the endpoints work in a simplified text format!
-
-
----
-
 **URL Shortener API**
 
 
