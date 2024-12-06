@@ -33,8 +33,6 @@ const shortenUrl = async (req, res) => {
 };
 
 // POST: Get the shortened URL
-// POST: Get the shortened URL
-// POST: Get the shortened URL
 const getShortenUrl = async (req, res) => {
   const { longUrl } = req.body;
 
