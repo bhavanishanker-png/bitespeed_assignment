@@ -34,31 +34,31 @@ const shortenUrl = async (req, res) => {
 
 // POST: Get the shortened URL
 // POST: Get the shortened URL
+// POST: Get the shortened URL
 const getShortenUrl = async (req, res) => {
   const { longUrl } = req.body;
 
   if (!longUrl) {
-    return res.status(400).json("Long URL required");
+    return res.status(400).json({ message: "Long URL is required" });
   }
 
   try {
     const query = 'SELECT short_url FROM url_shortener WHERE long_url = ?';
-    const results = await db.query(query, [longUrl]);
-    
-    // Check if a result is found
+    const [results] = await db.query(query, [longUrl]); // Destructure the results as `db.query` usually returns an array.
+
     if (results.length > 0) {
       // Prepend 'https://' to the short URL
-      console.log(results)
-      const shortUrl = `https://${results[0][0].short_url}`;
-      return res.status(200).json({ shortUrl:shortUrl,longUrl:longUrl });
+      const shortUrl = `https://${results[0].short_url}`;
+      return res.status(200).json({ shortUrl, longUrl });
     } else {
-      return res.status(404).json("Short URL not found");
+      return res.status(404).json({ message: "Long URL not found in the database", longUrl });
     }
   } catch (e) {
-    console.log(e);
-    return res.status(500).json("Internal server error");
+    console.error(e);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 
 module.exports = { shortenUrl, getShortenUrl };
