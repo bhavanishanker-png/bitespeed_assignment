@@ -24,7 +24,7 @@ const shortenUrl = async (req, res) => {
   try {
     const query = 'INSERT INTO url_shortener (long_url, short_url) VALUES (?, ?)';
     await db.query(query, [longUrl, shortUrl]);
-    return res.status(200).json({ message: "Short URL created!", shortUrl: `https://${shortUrl}` });
+    return res.status(200).json({ message: "Short URL created!", shortUrl: `${shortUrl}` });
   } catch (e) {
     console.log(e);
     return res.status(500).json("Internal server error");
